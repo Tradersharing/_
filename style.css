@@ -48,7 +48,7 @@ html, body {
   color: var(--primary);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 34px;
   margin-bottom: 4px;
   letter-spacing: 0.01em;
 }
