@@ -7,6 +7,8 @@ const displayPairs = [
   "EURUSD", "GBPUSD", "AUDUSD", "USDJPY", "USDCAD", "USDCHF", "NZDUSD",
   "EURGBP", "EURJPY", "GBPJPY", "CHFJPY", "EURAUD", "AUDJPY", "XAUUSD", "WTI"
 ];
+
+
 const allSignals = [
   {
     provider: "Data Analitik 1",
@@ -32,6 +34,10 @@ const allSignals = [
     ]
   },
 ];
+
+const API_URL = "https://corsproxy.io/?https://www.myfxbook.com/api/get-community-outlook.json?session=9UtvFTG9S31Z4vO1aDW31671626";
+
+
 
 function getLiveIcon() {
   return `<span class="icon-live" title="Realtime Analytic">
