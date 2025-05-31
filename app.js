@@ -25,16 +25,8 @@ const PAIR_UMUM = [
 const API_URL = "https://corsproxy.io/?https://www.myfxbook.com/api/get-community-outlook.json?session=9UtvFTG9S31Z4vO1aDW31671626";
 
 
-
-
-
-
-
-
 const allSignals = [
-  {
-    provider: "Data Analitik 1",
-    data: [
+  
       async function fetchMyfxbookData() {
   try {
     const res = await fetch(API_URL);
@@ -53,7 +45,7 @@ const allSignals = [
   }
 }
     ]
-  }
+  
   
   {
     provider: "Data Analitik 2",
