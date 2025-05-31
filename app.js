@@ -1,27 +1,60 @@
-// =========== Signal Section ===========
-const allowedPairs = [
-  "EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCAD", "USDCHF", "NZDUSD",
-  "EURGBP", "EURJPY", "GBPJPY", "CHFJPY", "EURAUD", "AUDJPY", "XAUUSD", "WTI"
+// =========== Signal Section ==========
+const PAIR_MAP = {
+  'EUR/USD': 'EURUSD', 'USD/JPY': 'USDJPY', 'GBP/USD': 'GBPUSD', 'AUD/USD': 'AUDUSD',
+  'USD/CHF': 'USDCHF', 'NZD/USD': 'NZDUSD', 'USD/CAD': 'USDCAD',
+  'EUR/JPY': 'EURJPY', 'EUR/GBP': 'EURGBP', 'EUR/AUD': 'EURAUD', 'EUR/CHF': 'EURCHF',
+  'EUR/CAD': 'EURCAD', 'EUR/NZD': 'EURNZD',
+  'GBP/JPY': 'GBPJPY', 'GBP/AUD': 'GBPAUD', 'GBP/CHF': 'GBPCHF', 'GBP/CAD': 'GBPCAD', 'GBP/NZD': 'GBPNZD',
+  'AUD/JPY': 'AUDJPY', 'AUD/NZD': 'AUDNZD', 'AUD/CAD': 'AUDCAD', 'AUD/CHF': 'AUDCHF',
+  'NZD/JPY': 'NZDJPY', 'NZD/CAD': 'NZDCAD', 'NZD/CHF': 'NZDCHF',
+  'CAD/JPY': 'CADJPY', 'CAD/CHF': 'CADCHF',
+  'CHF/JPY': 'CHFJPY',
+  'XAU/USD': 'XAUUSD', 'WTI/USD': 'WTIUSD', 'OIL/USD': 'OILUSD', 'US30': 'US30'
+};
+
+const PAIR_UMUM = [
+  "EURUSD", "USDJPY", "GBPUSD", "AUDUSD", "USDCHF", "NZDUSD", "USDCAD",
+  "EURJPY", "EURGBP", "EURCHF", "EURCAD", "EURAUD", "EURNZD",
+  "GBPJPY", "GBPAUD", "GBPCHF", "GBPCAD", "GBPNZD",
+  "AUDJPY", "AUDNZD", "AUDCAD", "AUDCHF",
+  "NZDJPY", "NZDCAD", "NZDCHF",
+  "CADJPY", "CADCHF", "CHFJPY",
+  "XAUUSD", "WTIUSD", "OILUSD", "US30"
 ];
-const displayPairs = [
-  "EURUSD", "GBPUSD", "AUDUSD", "USDJPY", "USDCAD", "USDCHF", "NZDUSD",
-  "EURGBP", "EURJPY", "GBPJPY", "CHFJPY", "EURAUD", "AUDJPY", "XAUUSD", "WTI"
-];
+
+const API_URL = "https://corsproxy.io/?https://www.myfxbook.com/api/get-community-outlook.json?session=9UtvFTG9S31Z4vO1aDW31671626";
+
+
+
+
+
+
 
 
 const allSignals = [
   {
     provider: "Data Analitik 1",
     data: [
-      { pair: "EURUSD", signal: "BUY", percent: 81 },
-      { pair: "GBPUSD", signal: "SELL", percent: 72 },
-      { pair: "XAUUSD", signal: "BUY", percent: 74 },
-      { pair: "AUDUSD", signal: "SELL", percent: 73 },
-      { pair: "WTI", signal: "BUY", percent: 78 },
-      { pair: "USDJPY", signal: "BUY", percent: 73 },
-      { pair: "EURJPY", signal: "BUY", percent: 75 }
+      async function fetchMyfxbookData() {
+  try {
+    const res = await fetch(API_URL);
+    const json = await res.json();
+    const data = (json.symbols || []).map(s => ({
+      name: s.name,
+      buy: s.longPercentage,
+      sell: s.shortPercentage
+    }));
+    renderKotakAnomali(data);
+    renderKotakSinyalHariIni(data);
+  } catch (err) {
+    document.getElementById("signal-output").innerText = "Gagal ambil sinyal: " + err;
+    document.getElementById("anomali-output").innerText = "Gagal ambil anomali: " + err;
+    console.error(err);
+  }
+}
     ]
-  },
+  }
+  
   {
     provider: "Data Analitik 2",
     data: [
@@ -34,8 +67,6 @@ const allSignals = [
     ]
   },
 ];
-
-const API_URL = "https://corsproxy.io/?https://www.myfxbook.com/api/get-community-outlook.json?session=9UtvFTG9S31Z4vO1aDW31671626";
 
 
 
