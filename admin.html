@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Panel - TraderSharing</title>
+  <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div class="brand-admin">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M2 17l7-7 5 5 7-7" stroke="#32B7FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>TraderSharing Admin</span>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="admin-section">
+      <h2>Posting Slide Promosi / Interaksi</h2>
+      <form id="slideForm">
+        <input type="text" id="slideTitle" placeholder="Judul Slide" maxlength="60" required>
+        <input type="text" id="slideDesc" placeholder="Deskripsi / CTA Slide" maxlength="120" required>
+        <input type="file" id="slideImage" accept="image/*">
+        <button type="submit">Tambah Slide</button>
+      </form>
+      <div class="slide-preview" id="slidePreview"></div>
+      <div class="slide-list" id="slideList"></div>
+    </section>
+  </main>
+  <footer class="footer-admin">
+    <span>&copy; 2025 TraderSharing Admin Panel</span>
+  </footer>
+  <script src="admin-slide.js"></script>
+</body>
+</html>
