@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TraderSharing - Advanced Trading Analysis</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div>
+        <div class="brand">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M2 17l7-7 5 5 7-7" stroke="#32B7FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>TraderSharing</span>
+        </div>
+        <div class="subtitle-main">Advanced Trading Analysis</div>
+        <div class="subtitle-desc">Real-time anomaly detection and technical analysis</div>
+      </div>
+    </div>
+    <div class="notif-bell">
+      <svg width="35" height="35" fill="none" viewBox="0 0 24 24"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-1.5 2h15L18 16Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="20" r="1.5" fill="#FF4141"/></svg>
+      <span class="notif-badge">3</span>
+    </div>
+  </header>
+  <main>
+    <div id="container"></div>
+    <!-- PROMO SLIDES -->
+    <div id="promoSlidesBox" style="display:none">
+      <div class="promo-title">
+        <svg width="24" height="24" style="vertical-align:-5px;margin-right:6px" fill="none" viewBox="0 0 24 24">
+          <rect x="2" y="7" width="3" height="10" rx="1.5" fill="#32b7ff"/>
+          <rect x="9" y="3" width="3" height="18" rx="1.5" fill="#32b7ff"/>
+          <rect x="16" y="10" width="3" height="4" rx="1.5" fill="#32b7ff"/>
+        </svg>
+        Promo & Informasi
+      </div>
+      <div class="card final-today promo-card">
+        <div class="swiper promo-swiper">
+          <div class="swiper-wrapper" id="slidePromoList"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer-vpn">
+    <span>&copy; 2025 TraderSharing. All rights reserved.<br>If signals do not appear, please use a VPN for the best experience.</span>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
