@@ -1,0 +1,219 @@
+:root {
+  --primary: #32B7FF;
+  --bg: #181f2a;
+  --card-bg: #222c3b;
+  --card-bg-alt: #263143;
+  --text-main: #fff;
+  --text-sub: #b7c5d8;
+  --accent: #FFD700;
+  --buy: #3DD36F;
+  --sell: #FF4141;
+  --border-radius: 28px;
+  --shadow: 0 4px 22px rgba(0,0,0,0.13);
+  --shadow-hover: 0 8px 28px rgba(0,0,0,0.17);
+  --font: 'Inter', Arial, sans-serif;
+}
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: var(--font);
+  font-size: 16px;
+  min-height: 100vh;
+}
+
+.header {
+  width: 100%;
+  background: linear-gradient(100deg, #20304b 60%, #1d2a3d 100%);
+  padding: 0 0 24px 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+  border-radius: 0 0 28px 28px;
+  max-width: 600px;
+  margin: 0 auto 0 auto;
+  position: relative;
+}
+
+.header-content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px 28px 0 28px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.brand {
+  font-size: 1.7em;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+  letter-spacing: 0.01em;
+}
+
+.subtitle-main {
+  font-size: 1.13em;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.subtitle-desc {
+  font-size: 1em;
+  color: var(--text-sub);
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+.notif-bell {
+  position: absolute;
+  top: 18px; 
+  right: 26px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+}
+.notif-bell svg {
+  background: #263045;
+  border-radius: 50%;
+  padding: 3px;
+  box-shadow: 0 1.5px 6px rgba(0,0,0,0.08);
+}
+.notif-badge {
+  position: absolute;
+  top: 2px; 
+  right: 2px;
+  background: #FF4141;
+  color: #fff;
+  font-size: 0.86em;
+  font-weight: 700;
+  min-width: 20px;
+  min-height: 20px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.09);
+  border: 2px solid #222c3b;
+  pointer-events: none;
+}
+
+main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 28px 26px 24px 26px;
+  width: 100%;
+  max-width: 540px;
+  box-shadow: var(--shadow);
+  margin-bottom: 0;
+  min-height: 110px;
+  transition: box-shadow 0.18s;
+  border: none;
+  position: relative;
+}
+
+.card .card-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.18em;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 11px;
+  gap: 9px;
+}
+
+.card .card-title .icon-live,
+.card .card-title .icon-signal {
+  display: inline-flex;
+  margin-right: 2px;
+  margin-top: 1px;
+  font-size: 1.13em;
+}
+
+.signal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.signal-list li {
+  display: flex;
+  justify-content: space-between;
+  margin: 7px 0;
+  font-size: 1.04em;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.buy { color: var(--buy); font-weight: 700; }
+.sell { color: var(--sell); font-weight: 700; }
+
+.card.final, .card.final-today {
+  background: var(--card-bg-alt);
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto 0 auto;
+  border: 2px solid var(--primary);
+  box-shadow: 0 6px 24px rgba(50,183,255,0.08);
+}
+
+.card.final-today .card-title {
+  color: #FFA500;
+  font-size: 1.15em;
+}
+
+.footer-vpn {
+  width: 100%;
+  max-width: 600px;
+  margin: 34px auto 0 auto;
+  padding: 20px 22px 20px 22px;
+  background: var(--card-bg);
+  color: #9fb5c9;
+  text-align: center;
+  font-size: 1.01em;
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.07);
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .header, .footer-vpn, main {
+    max-width: 97vw;
+    min-width: 0;
+    border-radius: 0 0 24px 24px;
+  }
+  .header-content { padding: 18px 5vw 0 5vw; }
+  .card, .card.final, .card.final-today { 
+    width: 100%; 
+    max-width: 97vw; 
+    min-width: 0; 
+    padding: 24px 6vw 18px 6vw;
+    border-radius: 22px;
+  }
+  #container { gap: 18px; }
+  .footer-vpn { 
+    font-size: 0.98em;
+    border-radius: 22px 22px 0 0;
+    padding: 16px 6vw 16px 6vw;
+  }
+}
+
+@media (max-width: 400px) {
+  .card, .card.final, .card.final-today { padding: 14px 3vw 10px 3vw; }
+  .header-content { padding: 10px 2vw 0 2vw;}
+  .footer-vpn { padding: 10px 2vw 10px 2vw; }
+}
