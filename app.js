@@ -115,7 +115,7 @@ renderSignals();
 // ========== PROMO SLIDES (SUPABASE) ==========
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 const supabaseUrl = 'https://vyeyrkrzgdpemqfnrjle.supabase.co'; // ganti dengan milikmu
-const supabaseKey = 'key_anon_public_baru';    // ganti dengan milikmu
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5ZXlya3J6Z2RwZW1xZm5yamxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2ODQ4NjksImV4cCI6MjA2NDI2MDg2OX0.0J26OpBV61eEioOg9t63wASpM-q0N9o72PPnmHYL_Zg';    // ganti dengan milikmu
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function loadSlides() {
