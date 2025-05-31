@@ -1,53 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>TraderSharing - Advanced Trading Analysis</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Halaman Utama</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <style>
+    body { 
+      max-width:780px; 
+      margin:2.5em auto 2em auto; 
+      font-family:sans-serif;
+      background: #f9fcff;
+      padding: 0 1.5em;
+    }
+    .header-gap {
+      margin-top: 2em;
+    }
+    .swiper { width: 100%; height: 340px; margin-bottom: 2.5em;}
+    .swiper-slide {
+      background: #fafafa;
+      border: 1px solid #dedede;
+      border-radius: 6px;
+      padding: 1em;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      height: 300px;
+    }
+    .swiper-slide img { max-width: 100%; height: auto; display: block; margin-top: 8px;}
+    .swiper-pagination-bullets { bottom: 6px !important;}
+    .swiper-pagination-bullet { background: #32b7ff; }
+    .swiper-button-next, .swiper-button-prev { color: #32b7ff;}
+    .slide-empty { color: #888; padding:2em; text-align:center;}
+
+    /* ==== Signal Card Styling ==== */
+    #container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: space-between;
+      margin-top: 2.5em;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px #cce3fa44;
+      border: 1px solid #e3e9f2;
+      margin-bottom: 16px;
+      padding: 1.25em 1.5em;
+      flex: 1 1 270px;
+      min-width: 260px;
+      max-width: 340px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+    }
+    .final-today { border:2px solid #32b7ff; }
+    .card-title {
+      font-weight: bold;
+      margin-bottom: 0.5em;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+    }
+    .api-url { font-size: 0.84em; color: #888; margin-left: 2.1em; word-break: break-all;}
+    .signal-list {
+      list-style: none;
+      margin: 0.5em 0 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4em;
+    }
+    .signal-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.2em 0.2em;
+      border-bottom: 1px solid #f2f6fb;
+      font-size: 1.03em;
+    }
+    .signal-list li:last-child { border-bottom: none;}
+    .buy { color: #1ba317; font-weight: 500;}
+    .sell { color: #e82c2c; font-weight: 500;}
+    @media (max-width: 900px) {
+      #container { flex-direction: column; gap:18px; }
+      .card { max-width: 100%; min-width: 0;}
+    }
+  </style>
 </head>
 <body>
-  <header class="header">
-    <div class="header-content">
-      <div>
-        <div class="brand">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M2 17l7-7 5 5 7-7" stroke="#32B7FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>TraderSharing</span>
-        </div>
-        <div class="subtitle-main">Advanced Trading Analysis</div>
-        <div class="subtitle-desc">Real-time anomaly detection and technical analysis</div>
-      </div>
+  <h2 class="header-gap">Slide Promosi</h2>
+  <div class="swiper">
+    <div class="swiper-wrapper" id="slidePromoList">
+      <!-- Slides will be injected here -->
     </div>
-    <div class="notif-bell">
-      <svg width="35" height="35" fill="none" viewBox="0 0 24 24"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-1.5 2h15L18 16Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="20" r="1.5" fill="#FF4141"/></svg>
-      <span class="notif-badge">3</span>
-    </div>
-  </header>
-  <main>
-    <div id="container"></div>
-    <!-- PROMO SLIDES -->
-    <div id="promoSlidesBox" style="display:none">
-      <div class="promo-title">
-        <svg width="24" height="24" style="vertical-align:-5px;margin-right:6px" fill="none" viewBox="0 0 24 24">
-          <rect x="2" y="7" width="3" height="10" rx="1.5" fill="#32b7ff"/>
-          <rect x="9" y="3" width="3" height="18" rx="1.5" fill="#32b7ff"/>
-          <rect x="16" y="10" width="3" height="4" rx="1.5" fill="#32b7ff"/>
-        </svg>
-        Promo & Informasi
-      </div>
-      <div class="card final-today promo-card">
-        <div class="swiper promo-swiper">
-          <div class="swiper-wrapper" id="slidePromoList"></div>
-          <div class="swiper-pagination"></div>
-        </div>
-      </div>
-    </div>
-  </main>
-  <footer class="footer-vpn">
-    <span>&copy; 2025 TraderSharing. All rights reserved.<br>If signals do not appear, please use a VPN for the best experience.</span>
-  </footer>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+    <!-- Add Navigation -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+  <h2 class="header-gap">Analistik Sinyal</h2>
+  <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script type="module" src="index.js"></script>
   <script type="module" src="app.js"></script>
 </body>
 </html>
