@@ -105,7 +105,7 @@ main {
 #container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 34px;
   align-items: center;
 }
 .card,
@@ -166,7 +166,7 @@ main {
 /* === PROMO SLIDES === */
 #promoSlidesBox {
   width: 100%;
-  max-width: 540px;
+  max-width: 4000px;
   margin: 0 auto 16px auto;
   display: flex;
   flex-direction: column;
