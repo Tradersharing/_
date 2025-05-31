@@ -41,53 +41,50 @@ async function fetchMyfxbookData() {
   }
 }
 
-function renderKotakAnomali(data) {
-  const pairSelected = document.getElementById("pair").value;
-  const pairKey = PAIR_MAP[pairSelected] || pairSelected.replace("/", "");
-  const found = data.find(p => p.name === pairKey);
-  const anomaliOutput = document.getElementById("anomali-output");
-  if (found && (typeof found.buy === "number") && (typeof found.sell === "number")) {
-    let tujuan, anomali;
-    if (found.buy > found.sell) {
-      tujuan = "BUY";
-      anomali = "SELL";
-    } else {
-      tujuan = "SELL";
-      anomali = "BUY";
-    }
-    anomaliOutput.innerHTML = `
-      <div class="anomali-center">
-        <div class="anomali-pair">${pairKey}</div>
-        <div class="anomali-label">Anomali</div>
-        <div class="anomali-value ${anomali === "BUY" ? "green" : "red"}">${anomali}</div>
-        <div class="anomali-label">Tujuan</div>
-        <div class="anomali-value ${tujuan === "BUY" ? "green" : "red"}">${tujuan}</div>
-      </div>
-    `;
-  } else {
-    anomaliOutput.innerHTML = `<div class="anomali-center"><i>Belum ada sinyal untuk pair ini.</i></div>`;
+
+// ========== PROMO SLIDES (SUPABASE) ==========
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+const supabaseUrl = 'https://vyeyrkrzgdpemqfnrjle.supabase.co'; // ganti dengan milikmu
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5ZXlya3J6Z2RwZW1xZm5yamxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2ODQ4NjksImV4cCI6MjA2NDI2MDg2OX0.0J26OpBV61eEioOg9t63wASpM-q0N9o72PPnmHYL_Zg';    // ganti dengan milikmu
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+async function loadSlides() {
+  const { data, error } = await supabase
+    .from('slides')
+    .select('*')
+    .order('created_at', { ascending: false });
+  const promoBox = document.getElementById('promoSlidesBox');
+  const container = document.getElementById('slidePromoList');
+  if (error || !data || !Array.isArray(data) || !container) {
+    promoBox.style.display = 'none';
+    return;
   }
-}
+  if (!data.length) {
+    promoBox.style.display = 'none';
+    return;
+  }
+  promoBox.style.display = '';
+  container.innerHTML = data.map(s => `
+    <div class="swiper-slide" style="display:flex;flex-direction:column;">
+      <b style="color:#fff;font-size:1.09em;margin-bottom:0.25em;">${s.title}</b>
+      <div style="color:#cddfff;font-size:1em;margin-bottom:0.5em;">${s.desc}</div>
+      ${s.image_url ? `<img src="${s.image_url}" loading="lazy">` : ""}
+      <div class="promo-date" style="margin-top:auto;font-size:0.96em;color:#9fb5c9;">${new Date(s.created_at).toLocaleString()}</div>
+    </div>
+  `).join('');
 
-function renderKotakSinyalHariIni(data) {
-  // Pair mayor/minor/komoditas/indeks utama, buy/sell ≥ 70%
-  const filtered = data.filter(
-    p => PAIR_UMUM.includes(p.name) && (p.buy >= 70 || p.sell >= 70)
-  );
-  const output = filtered.map(p => {
-    let signal = p.buy >= p.sell ? "BUY" : "SELL";
-    let percent = p.buy >= p.sell ? p.buy : p.sell;
-    return `<div class="row-x">
-      <span class="label-x" style="min-width:60px;">${p.name}:</span>
-      <span class="value-x ${signal === "BUY" ? "green" : "red"}">${signal} ${percent}%</span>
-    </div>`;
-  }).join('') || "<i>Tidak ada sinyal dengan kriteria (≥ 70%)</i>";
-  document.getElementById("signal-output").innerHTML = output;
+  new Swiper('.promo-swiper', {
+    loop: data.length > 1,
+    autoplay: data.length > 1 ? { delay: 15000, disableOnInteraction: false } : false,
+    pagination: { el: '.swiper-pagination', clickable: true },
+    slidesPerView: 1,
+    spaceBetween: 12,
+    centeredSlides: true,
+    allowTouchMove: true
+  });
 }
+window.addEventListener('DOMContentLoaded', loadSlides);
 
-function kosongkanNews() {
-  document.getElementById("news-output").innerHTML = "";
-}
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("pair").addEventListener("change", fetchMyfxbookData);
