@@ -114,7 +114,7 @@ renderSignals();
 
 // ========== PROMO SLIDES (SUPABASE) ==========
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-const supabaseUrl = 'https://xxxx.supabase.co'; // ganti dengan milikmu
+const supabaseUrl = 'https://vyeyrkrzgdpemqfnrjle.supabase.co'; // ganti dengan milikmu
 const supabaseKey = 'key_anon_public_baru';    // ganti dengan milikmu
 const supabase = createClient(supabaseUrl, supabaseKey);
 
