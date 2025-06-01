@@ -1,10 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin Panel - TraderSharing</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="admin-style.css">
+  <style>
+    body {
+      background: #f3f6fa;
+      color: #222;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
+    .header {
+      width: 100vw;
+      background: linear-gradient(100deg, #20304b 60%, #1d2a3d 100%);
+      padding: 0 0 20px 0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+    }
+    .header-content {
+      max-width: 900px; margin: 0 auto; padding: 28px 20px 0 20px; display: flex;
+    }
+    .brand-admin {
+      font-size: 1.45em; font-weight: 700; color: #32B7FF;
+      display: flex; align-items: center; gap: 10px; margin-bottom: 3px; letter-spacing: 0.01em;
+    }
+    main {
+      max-width: 580px;
+      margin: 35px auto 0 auto;
+      padding: 0 10px;
+    }
+    .admin-section {
+      background: #fff;
+      border-radius: 20px;
+      padding: 22px 22px 18px 22px;
+      margin-bottom: 26px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+    }
+    .admin-section h2 { margin-top: 0; color: #32B7FF; font-size: 1.14em; }
+    .admin-form {
+      display: flex; flex-direction: column; gap: 13px; margin-bottom: 16px;
+    }
+    .slide-list { margin-top: 10px; display: flex; flex-direction: column; gap: 13px; }
+    .slide-item {
+      background: #f7fbff;
+      border-radius: 14px;
+      padding: 13px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      box-shadow: 0 2px 9px rgba(0,0,0,0.06);
+      position: relative;
+    }
+    .slide-item img {
+      max-width: 70px; max-height: 50px; border-radius: 7px; margin-right: 13px;
+      object-fit: cover;
+    }
+    .slide-info {
+      flex:1;
+      min-width: 0;
+      font-size: 1em;
+      color: #222;
+    }
+    .slide-title {
+      font-weight: 700;
+      color: #32B7FF;
+      font-size: 1.07em;
+      margin-bottom: 2px;
+    }
+    .slide-desc {
+      font-size: 0.97em;
+      color: #444;
+      margin-bottom: 5px;
+      word-break: break-word;
+    }
+    .slide-meta {
+      font-size: 0.91em;
+      color: #7fa8c9;
+    }
+    .slide-actions {
+      display: flex; gap: 8px;
+      position: absolute; right: 18px; top: 12px;
+    }
+    .slide-actions button {
+      background: #eee;
+      color: #222;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.99em;
+      padding: 5px 13px;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    .slide-actions button.edit { background: #29b6f6; color: #fff;}
+    .slide-actions button.delete { background: #FF4141; color: #fff;}
+    .slide-actions button.save { background: #4caf50; color: #fff;}
+    .slide-actions button.cancel { background: #e0e0e0; color: #222;}
+    .img-preview img {
+      max-width: 120px; max-height: 64px; border-radius: 8px;
+      display: block;
+      margin-top: 7px;
+    }
+    .footer-admin {
+      width: 100vw;
+      padding: 18px 0 18px 0;
+      background: #212a3c;
+      color: #9fb5c9;
+      text-align: center;
+      font-size: 0.97em;
+      border-radius: 18px 18px 0 0;
+      margin-top: 40px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+      letter-spacing: 0.01em;
+    }
+    @media (max-width: 600px) {
+      main { max-width: 99vw; padding: 0 2vw;}
+      .admin-section { padding: 13px 4vw 10px 4vw; }
+    }
+  </style>
 </head>
 <body>
   <header class="header">
@@ -18,19 +132,19 @@
   <main>
     <section class="admin-section">
       <h2>Posting Slide Promosi / Interaksi</h2>
-      <form id="slideForm">
+      <form id="slideForm" class="admin-form" autocomplete="off">
         <input type="text" id="slideTitle" placeholder="Judul Slide" maxlength="60" required>
-        <input type="text" id="slideDesc" placeholder="Deskripsi / CTA Slide" maxlength="120" required>
+        <textarea id="slideDesc" placeholder="Deskripsi / CTA Slide" maxlength="120" required rows="2" style="resize:vertical"></textarea>
         <input type="file" id="slideImage" accept="image/*">
-        <button type="submit">Tambah Slide</button>
+        <div class="img-preview" id="slidePreview"></div>
+        <button type="submit" style="margin-top:10px;background:#32B7FF;color:#fff;font-weight:600;">Tambah Slide</button>
       </form>
-      <div class="slide-preview" id="slidePreview"></div>
       <div class="slide-list" id="slideList"></div>
     </section>
   </main>
   <footer class="footer-admin">
     <span>&copy; 2025 TraderSharing Admin Panel</span>
   </footer>
-  <script src="admin-slide.js"></script>
+  <script type="module" src="admin-app.js"></script>
 </body>
 </html>
