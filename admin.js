@@ -1,137 +1,168 @@
-// --- Notifikasi ---
-let notifList = JSON.parse(localStorage.getItem("notifList") || "[]");
-const notifListDiv = document.getElementById("notifList");
-function renderNotif() {
-  const now = Date.now();
-  notifList = notifList.filter(n => now - n.time < 86400000); // 24jam
-  localStorage.setItem("notifList", JSON.stringify(notifList));
-  notifListDiv.innerHTML = notifList.map((n,i) => `
-    <div class="notif-item">
-      <span>${n.text}</span>
-      <span>
-        <span class="notif-time">${timeAgo(n.time)}</span>
-        <button onclick="deleteNotif(${i})">Hapus</button>
-      </span>
-    </div>
-  `).join('');
-}
-window.deleteNotif = function(idx) {
-  notifList.splice(idx,1); renderNotif();
-  localStorage.setItem("notifList", JSON.stringify(notifList));
-}
-document.getElementById("notifForm").onsubmit = e => {
-  e.preventDefault();
-  const text = document.getElementById("notifText").value.trim();
-  if(!text) return;
-  notifList.unshift({ text, time: Date.now() });
-  renderNotif();
-  document.getElementById("notifText").value = "";
-};
-renderNotif();
+// === SETUP SUPABASE ===
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-// --- Iklan/Template ---
-let iklanList = JSON.parse(localStorage.getItem("iklanList") || "[]");
-const iklanDiv = document.getElementById("iklanList");
-function renderIklan() {
-  iklanDiv.innerHTML = iklanList.map((ik,i) => `
-    <div class="iklan-item">
-      ${ik.img ? `<img src="${ik.img}"/>` : ""}
-      <span>${ik.text}</span>
-      <span>
-        <span class="iklan-time">${timeAgo(ik.time)}</span>
-        <button onclick="deleteIklan(${i})">Hapus</button>
-      </span>
-    </div>
-  `).join('');
-}
-window.deleteIklan = function(idx) {
-  iklanList.splice(idx,1); renderIklan();
-  localStorage.setItem("iklanList", JSON.stringify(iklanList));
-}
-document.getElementById("iklanForm").onsubmit = e => {
-  e.preventDefault();
-  const text = document.getElementById("iklanText").value.trim();
-  const fileInput = document.getElementById("iklanImage");
-  let imgData = "";
-  if(fileInput.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      imgData = evt.target.result;
-      iklanList.unshift({ text, img: imgData, time: Date.now() });
-      renderIklan();
-      localStorage.setItem("iklanList", JSON.stringify(iklanList));
-    };
-    reader.readAsDataURL(fileInput.files[0]);
-  } else {
-    iklanList.unshift({ text, img: "", time: Date.now() });
-    renderIklan();
-    localStorage.setItem("iklanList", JSON.stringify(iklanList));
+const supabaseUrl = 'https://vyeyrkrzgdpemqfnrjle.supabase.co'; // Ganti dengan project kamu
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwi...'; // Ganti dengan service_role/admin key (jangan publish key ini di public)
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// === DOM ===
+const slideForm = document.getElementById('slideForm');
+const slideTitle = document.getElementById('slideTitle');
+const slideDesc = document.getElementById('slideDesc');
+const slideImage = document.getElementById('slideImage');
+const slidePreview = document.getElementById('slidePreview');
+const slideListDiv = document.getElementById('slideList');
+
+let editMode = false;
+let editId = null;
+
+// === LOAD SLIDES DARI SUPABASE ===
+async function loadSlides() {
+  slideListDiv.innerHTML = "Loading...";
+  const { data, error } = await supabase.from('slides').select('*').order('created_at', { ascending: false });
+  if (error) {
+    slideListDiv.innerHTML = `<span style="color:red;">Error: ${error.message}</span>`;
+    return;
   }
-  document.getElementById("iklanText").value = "";
-  fileInput.value = "";
-  document.getElementById("iklanPreview").innerHTML = "";
+  if (!data.length) {
+    slideListDiv.innerHTML = `<span style="color:#888;">Belum ada slide promosi.</span>`;
+    return;
+  }
+  slideListDiv.innerHTML = '';
+  data.forEach(slide => {
+    const div = document.createElement('div');
+    div.className = 'slide-item';
+
+    // Mode edit
+    if (editMode && editId === slide.id) {
+      div.innerHTML = `
+        <input type="text" class="slide-title" value="${slide.title.replace(/"/g,'&quot;')}" id="editTitle${slide.id}" maxlength="60" style="width:98%;margin-bottom:7px;font-weight:600;">
+        <textarea class="slide-desc" id="editDesc${slide.id}" maxlength="120" rows="2" style="width:98%;resize:vertical;">${slide.desc}</textarea>
+        <div class="img-preview" id="editPreview${slide.id}">
+          ${slide.image_url ? `<img src="${slide.image_url}">` : ""}
+        </div>
+        <input type="file" id="editImage${slide.id}" accept="image/*" style="margin-top:5px;">
+        <div class="slide-actions">
+          <button class="save" onclick="window.saveEdit(${slide.id})">Simpan</button>
+          <button class="cancel" onclick="window.cancelEdit()">Batal</button>
+        </div>
+      `;
+      setTimeout(() => {
+        document.getElementById(`editImage${slide.id}`).onchange = function() {
+          const file = this.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            document.getElementById(`editPreview${slide.id}`).innerHTML = `<img src="${evt.target.result}">`;
+          };
+          reader.readAsDataURL(file);
+        };
+      }, 100);
+    } else {
+      div.innerHTML = `
+        ${slide.image_url ? `<img src="${slide.image_url}" loading="lazy">` : ""}
+        <div class="slide-info">
+          <div class="slide-title">${slide.title}</div>
+          <div class="slide-desc">${slide.desc}</div>
+          <div class="slide-meta">${new Date(slide.created_at).toLocaleString()}</div>
+        </div>
+        <div class="slide-actions">
+          <button class="edit" onclick="window.startEdit(${slide.id})">Edit</button>
+          <button class="delete" onclick="window.deleteSlide(${slide.id})">Hapus</button>
+        </div>
+      `;
+    }
+    slideListDiv.appendChild(div);
+  });
+}
+
+// === TAMBAH SLIDE ===
+slideForm.onsubmit = async e => {
+  e.preventDefault();
+  const title = slideTitle.value.trim();
+  const desc = slideDesc.value.trim();
+  let image_url = "";
+  if (slideImage.files[0]) {
+    // Upload image ke Supabase Storage (opsional)
+    const file = slideImage.files[0];
+    const fileName = `slide_${Date.now()}_${file.name}`;
+    const { data, error } = await supabase.storage.from('public').upload(fileName, file, { upsert: true });
+    if (!error) {
+      const { data: imgUrl } = supabase.storage.from('public').getPublicUrl(fileName);
+      image_url = imgUrl.publicUrl;
+    }
+  }
+  const { error } = await supabase.from('slides').insert([{ title, desc, image_url }]);
+  if (!error) {
+    slideTitle.value = "";
+    slideDesc.value = "";
+    slideImage.value = "";
+    slidePreview.innerHTML = "";
+    loadSlides();
+  } else {
+    alert("Gagal posting: " + error.message);
+  }
 };
-document.getElementById("iklanImage").onchange = function() {
+
+// === Preview Image saat input ===
+slideImage.onchange = function() {
   const file = this.files[0];
-  if (!file) return;
+  if (!file) { slidePreview.innerHTML = ""; return; }
   const reader = new FileReader();
   reader.onload = function(evt) {
-    document.getElementById("iklanPreview").innerHTML = `<img src="${evt.target.result}"/><span>Preview</span>`;
+    slidePreview.innerHTML = `<img src="${evt.target.result}">`;
   };
   reader.readAsDataURL(file);
 };
-renderIklan();
 
-// --- Slide Promosi/Interaksi ---
-let slideList = JSON.parse(localStorage.getItem("slideList") || "[]");
-const slideListDiv = document.getElementById("slideList");
-function renderSlide() {
-  slideListDiv.innerHTML = slideList.map((s,i) => `
-    <div class="slide-item">
-      ${s.img ? `<img src="${s.img}"/>` : ""}
-      <span><b>${s.title}</b><br><small>${s.desc}</small></span>
-      <span>
-        <span class="slide-time">${timeAgo(s.time)}</span>
-        <button onclick="deleteSlide(${i})">Hapus</button>
-      </span>
-    </div>
-  `).join('');
-}
-window.deleteSlide = function(idx) {
-  slideList.splice(idx,1); renderSlide();
-  localStorage.setItem("slideList", JSON.stringify(slideList));
-}
-document.getElementById("slideForm").onsubmit = e => {
-  e.preventDefault();
-  const title = document.getElementById("slideTitle").value.trim();
-  const desc = document.getElementById("slideDesc").value.trim();
-  const fileInput = document.getElementById("slideImage");
-  let imgData = "";
-  if(fileInput.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      imgData = evt.target.result;
-      slideList.unshift({ title, desc, img: imgData, time: Date.now() });
-      renderSlide();
-      localStorage.setItem("slideList", JSON.stringify(slideList));
-    };
-    reader.readAsDataURL(fileInput.files[0]);
-  } else {
-    slideList.unshift({ title, desc, img: "", time: Date.now() });
-    renderSlide();
-    localStorage.setItem("slideList", JSON.stringify(slideList));
-  }
-  document.getElementById("slideTitle").value = "";
-  document.getElementById("slideDesc").value = "";
-  fileInput.value = "";
+// === HAPUS SLIDE ===
+window.deleteSlide = async function(id) {
+  if (!confirm('Hapus slide ini?')) return;
+  const { error } = await supabase.from('slides').delete().eq('id', id);
+  if (!error) loadSlides();
+  else alert('Gagal hapus: ' + error.message);
 };
-renderSlide();
 
-// --- Helper ---
-function timeAgo(time) {
-  const s = Math.floor((Date.now() - time)/1000);
-  if (s < 60) return `${s}s ago`;
-  if (s < 3600) return `${Math.floor(s/60)}m ago`;
-  if (s < 86400) return `${Math.floor(s/3600)}h ago`;
-  return `${Math.floor(s/86400)}d ago`;
-}
+// === EDIT SLIDE ===
+window.startEdit = function(id) {
+  editMode = true;
+  editId = id;
+  loadSlides();
+};
+window.cancelEdit = function() {
+  editMode = false;
+  editId = null;
+  loadSlides();
+};
+window.saveEdit = async function(id) {
+  const newTitle = document.getElementById(`editTitle${id}`).value.trim();
+  const newDesc = document.getElementById(`editDesc${id}`).value.trim();
+  let image_url = "";
+  const imgInput = document.getElementById(`editImage${id}`);
+  if (imgInput.files[0]) {
+    const file = imgInput.files[0];
+    const fileName = `slide_${Date.now()}_${file.name}`;
+    const { data, error } = await supabase.storage.from('public').upload(fileName, file, { upsert: true });
+    if (!error) {
+      const { data: imgUrl } = supabase.storage.from('public').getPublicUrl(fileName);
+      image_url = imgUrl.publicUrl;
+    }
+  }
+  // Ambil slide lama untuk image fallback
+  const { data: oldS } = await supabase.from('slides').select('*').eq('id', id).single();
+  const { error } = await supabase.from('slides').update({
+    title: newTitle,
+    desc: newDesc,
+    image_url: image_url || (oldS ? oldS.image_url : "")
+  }).eq('id', id);
+  if (!error) {
+    editMode = false;
+    editId = null;
+    loadSlides();
+  } else {
+    alert("Gagal edit: " + error.message);
+  }
+};
+
+// === INIT ===
+loadSlides();
