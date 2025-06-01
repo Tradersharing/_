@@ -208,7 +208,3 @@ loadSlides();
 fetchAnalitik1();
 loadPostsBox();
 
-// ========== MENU BURGER SIAP ==========
-document.getElementById('burgerBtn').addEventListener('click', () => {
-  alert('Menu akan segera tersedia!');
-});
