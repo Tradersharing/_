@@ -67,29 +67,6 @@
       font-size: 0.99em;
       font-weight: 400;
     }
-    .notif-bell {
-      margin-left: 1.1em;
-      position: relative;
-      background: #fff3cd;
-      border-radius: 8px;
-      width: 38px; height: 38px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 7px #ffd60033;
-    }
-    .notif-bell svg { width: 25px; height: 25px; }
-    .notif-badge {
-      position: absolute;
-      top: 7px; right: 7px;
-      background: #ff3141;
-      color: #fff;
-      border-radius: 50%;
-      font-size: 0.88em;
-      font-weight: 700;
-      min-width: 18px; min-height: 18px;
-      display: flex; align-items: center; justify-content: center;
-      padding: 0 5px;
-      border: 2px solid #fff3cd;
-    }
     .burger-menu {
       width: 36px; height: 36px; display: flex;
       align-items: center; justify-content: center;
@@ -371,14 +348,6 @@
         <span class="desc">Real-time anomaly detection and technical analysis</span>
       </span>
     </div>
-    <span class="notif-bell">
-      <svg viewBox="0 0 24 24" fill="none">
-        <path d="M12 5C9.23858 5 7 7.23858 7 10V13.382L5.55365 15.2768C5.21162 15.7037 5.50504 16.3034 6.02666 16.3034H17.9733C18.495 16.3034 18.7884 15.7037 18.4464 15.2768L17 13.382V10C17 7.23858 14[...]
-          stroke="#ffc107" stroke-width="2" fill="#fff3cd"/>
-        <circle cx="12" cy="19" r="2" fill="#ffc107"/>
-      </svg>
-      <span class="notif-badge">3</span>
-    </span>
     <button class="burger-menu" id="burgerBtn" tabindex="0" aria-label="Menu">
       <svg viewBox="0 0 28 28" fill="none">
         <rect x="4" y="7" width="20" height="2.7" rx="1.3" fill="white"/>
@@ -464,22 +433,31 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script type="module" src="app.js"></script>
   <script>
-    // Modal sheet menu toggle
+    // Modal sheet menu toggle & hide posting admin saat aktif
     const burgerBtn = document.getElementById('burgerBtn');
     const modalBg = document.getElementById('modalMenuBg');
     const closeModalSheet = document.getElementById('closeModalSheet');
+    const postsSection = document.getElementById('postsSection');
     burgerBtn.addEventListener('click', () => {
       modalBg.classList.add('active');
+      if (postsSection) postsSection.style.display = 'none';
     });
     closeModalSheet.addEventListener('click', () => {
       modalBg.classList.remove('active');
+      if (postsSection) postsSection.style.display = '';
     });
     modalBg.addEventListener('click', (e) => {
-      if (e.target === modalBg) modalBg.classList.remove('active');
+      if (e.target === modalBg) {
+        modalBg.classList.remove('active');
+        if (postsSection) postsSection.style.display = '';
+      }
     });
     // ESC key to close modal
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') modalBg.classList.remove('active');
+      if (e.key === 'Escape') {
+        modalBg.classList.remove('active');
+        if (postsSection) postsSection.style.display = '';
+      }
     });
   </script>
 </body>
