@@ -129,14 +129,14 @@
       let chart = type === "BUY" ? "📈" : "📉";
       let tp1, tp2, tp3;
       if (type === "BUY") {
-        tp1 = toFixed(entry + pip20, pair);
-        tp2 = toFixed(entry + pip50, pair);
-        tp3 = toFixed(entry + pip100, pair);
-        return `${chart} *New signal BUY*\n\n*Recomend Entry:* ${toFixed(entry, pair)}\n\n*Take profit:*\nTP 1: ${tp1}\nTP 2: ${tp2}\nTP 3: ${tp3}\n\n*Stop loss:*\nSL 50 pips\nSL 50 pips`;
+      <div  tp1 = toFixed(entry + pip20, pair); </div>
+       <div tp2 = toFixed(entry + pip50, pair);</div>
+       <div tp3 = toFixed(entry + pip100, pair);</div>
+     <div   return `${chart} *New signal BUY*\n\n*Recomend Entry:* ${toFixed(entry, pair)}\n\n*Take profit:*\nTP 1: ${tp1}\nTP 2: ${tp2}\nTP 3: ${tp3}\n\n*Stop loss:*\nSL 50 pips\nSL 50 pips`;
       } else {
-        tp1 = toFixed(entry - pip20, pair);
-        tp2 = toFixed(entry - pip50, pair);
-        tp3 = toFixed(entry - pip100, pair);
+      <div  tp1 = toFixed(entry - pip20, pair);</div>
+       <div tp2 = toFixed(entry - pip50, pair);</div>
+       <div tp3 = toFixed(entry - pip100, pair);</div>
         return `${chart} *New signal SELL*\n\n*Recomend Entry:* ${toFixed(entry, pair)}\n\n*Take profit:*\nTP 1: ${tp1}\nTP 2: ${tp2}\nTP 3: ${tp3}\n\n*Stop loss:*\nSL 50 pips\nSL 50 pips`;
       }
     }
