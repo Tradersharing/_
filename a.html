@@ -1,0 +1,182 @@
+<!doctype html>
+<html ⚡ lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Manual Forex Signal Generator - AMP</title>
+  <link rel="canonical" href="self.html"/>
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <meta name="description" content="Generator Sinyal Forex Manual | UI Seputarforex | AMP | Copy Telegram">
+  <style amp-custom>
+    body { background: #f6fafd; font-family: 'Segoe UI', Arial, sans-serif; color:#222; margin:0; }
+    .centered { max-width:420px; margin:24px auto; background:#fff; border-radius:12px; box-shadow:0 2px 8px #0002; padding:24px 16px 20px 16px; }
+    .head { text-align:center; margin-bottom:20px; }
+    h1 { font-size:1.25rem; color:#1767b3; margin:0 0 8px 0; font-weight:700;}
+    .row { margin-bottom:18px; }
+    label { font-size:1rem; font-weight:500; margin-bottom:6px; display:block; color:#1767b3;}
+    select, input[type=number] {
+      width:100%; padding:10px 8px; border-radius:6px; border:1.5px solid #c7e1fa;
+      font-size:1rem; margin-top:5px; background:#f4faff;
+    }
+    .ampstart-btn {
+      background:#1976d2; color:#fff; border:none; border-radius:50px;
+      padding:12px 0; width:100%; font-size:1.07rem; font-weight:600;
+      margin-top:14px; letter-spacing:0.02em; transition:background 0.2s;
+    }
+    .ampstart-btn:active { background:#125299; }
+    .output-box {
+      margin-top:24px; background:#f4f8fe; border-radius:8px; padding:19px 14px 12px 14px;
+      box-shadow:0 1px 3px #0001; font-size:1.11rem; line-height:1.6; position:relative;
+    }
+    .copy-btn {
+      position:absolute; top:15px; right:19px; background:#e3f2fd; color:#1976d2;
+      border:none; border-radius:6px; padding:5px 13px; font-size:14px; cursor:pointer; font-weight:500;
+      transition:background 0.2s;
+    }
+    .copy-btn:active { background:#bbdefb;}
+    .success-msg { color:#388e3c; font-size:13px; margin-top:7px;}
+    .chart-icon { font-size:1.5em; vertical-align:middle; }
+    @media(max-width:520px){
+      .centered{max-width:99vw;padding:13px;}
+    }
+    /* Seputarforex accent */
+    .sf-accent { color:#1976d2; font-weight:600; }
+    option { font-size:1rem; }
+  </style>
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <!-- amp-bind for live update -->
+  <script async custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js"></script>
+</head>
+<body>
+  <div class="centered">
+    <div class="head">
+      <h1>Manual Signal Forex</h1>
+      <div style="font-size:1rem;color:#1976d2;">UI Mirip Seputarforex | AMP</div>
+    </div>
+    <form method="post" action-xhr="#" id="fxsignal" on="submit:AMP.setState({ showResult: true })" target="_top" custom-validation-reporting="show-all-on-submit">
+      <div class="row">
+        <label for="pair">Pair</label>
+        <select name="pair" id="pair" required
+          on="change:AMP.setState({ fxpair: event.value })"
+          [value]="fxpair">
+          <option value="" disabled selected>Pilih Pair...</option>
+          <option value="AUDCAD">AUDCAD</option>
+          <option value="AUDCHF">AUDCHF</option>
+          <option value="AUDJPY">AUDJPY</option>
+          <option value="AUDNZD">AUDNZD</option>
+          <option value="AUDUSD">AUDUSD</option>
+          <option value="CADJPY">CADJPY</option>
+          <option value="CHFJPY">CHFJPY</option>
+          <option value="EURAUD">EURAUD</option>
+          <option value="EURCAD">EURCAD</option>
+          <option value="EURCHF">EURCHF</option>
+          <option value="EURGBP">EURGBP</option>
+          <option value="EURJPY">EURJPY</option>
+          <option value="EURNZD">EURNZD</option>
+          <option value="EURUSD">EURUSD</option>
+          <option value="GBPAUD">GBPAUD</option>
+          <option value="GBPCAD">GBPCAD</option>
+          <option value="GBPCHF">GBPCHF</option>
+          <option value="GBPJPY">GBPJPY</option>
+          <option value="GBPNZD">GBPNZD</option>
+          <option value="GBPUSD">GBPUSD</option>
+          <option value="NZDCAD">NZDCAD</option>
+          <option value="NZDCHF">NZDCHF</option>
+          <option value="NZDJPY">NZDJPY</option>
+          <option value="NZDUSD">NZDUSD</option>
+          <option value="USDCAD">USDCAD</option>
+          <option value="USDCHF">USDCHF</option>
+          <option value="USDJPY">USDJPY</option>
+          <option value="WTI">WTI</option>
+          <option value="OIL">OIL</option>
+          <option value="XAUUSD">XAUUSD</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="type">Tipe Order</label>
+        <select name="type" id="type" required
+          on="change:AMP.setState({ fxtype: event.value })"
+          [value]="fxtype">
+          <option value="BUY">BUY</option>
+          <option value="SELL">SELL</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="price">Recomend Entry (Harga)</label>
+        <input type="number" id="price" name="price" step="0.00001" min="0" placeholder="Contoh: 1.08555" required
+          on="input:AMP.setState({ fxprice: event.value })"
+          [value]="fxprice" autocomplete="off">
+      </div>
+      <button class="ampstart-btn" type="submit">Buat Sinyal</button>
+    </form>
+
+    <div class="output-box" [class]="showResult ? 'output-box' : 'output-box'+' hidden'" [hidden]="!showResult">
+      <button class="copy-btn"
+        on="tap:AMP.setState({copySuccess:true}), fxsignal.copyToClipboard(signalOutput)">
+        Copy
+      </button>
+      <div id="signalOutputBlock">
+        <span [text]="signalOutput"></span>
+      </div>
+      <div class="success-msg" [hidden]="!copySuccess">Disalin!</div>
+    </div>
+  </div>
+
+  <!-- AMP custom script for logic -->
+  <script id="amp-custom-script" type="text/plain" target="amp-script">
+    (() => {
+      // pipToPrice
+      function pipToPrice(pips, pair) {
+        if (pair === "XAUUSD") return pips * 0.1;
+        if (pair === "WTI" || pair === "OIL") return pips * 0.01;
+        if (pair && pair.endsWith("JPY")) return pips * 0.01;
+        return pips * 0.0001;
+      }
+      function toFixed(val, pair) {
+        // Gold/Oil 2 decimal, JPY 3, normal 5
+        if (pair === "XAUUSD" || pair === "WTI" || pair === "OIL") return val.toFixed(2);
+        if (pair && pair.endsWith("JPY")) return val.toFixed(3);
+        return val.toFixed(5);
+      }
+      window.fxsignal = {
+        copyToClipboard: txt => {
+          navigator.clipboard.writeText(txt);
+        }
+      };
+      function getSignal(pair, type, price) {
+        let entry = parseFloat(price);
+        if (!entry || !pair || !type) return "";
+        let pip20 = pipToPrice(20, pair);
+        let pip50 = pipToPrice(50, pair);
+        let pip100 = pipToPrice(100, pair);
+        let chart = type === "BUY" ? "📈" : "📉";
+        let text;
+        let tp1, tp2, tp3;
+        if (type === "BUY") {
+          tp1 = toFixed(entry + pip20, pair);
+          tp2 = toFixed(entry + pip50, pair);
+          tp3 = toFixed(entry + pip100, pair);
+          text = `${chart} *New signal BUY*\n\n*Recomend Entry:* ${toFixed(entry, pair)}\n\n*Take profit:*\nTP 1: ${tp1}\nTP 2: ${tp2}\nTP 3: ${tp3}\n\n*Stop loss:*\nSL 50 pips\nSL 50 pips`;
+        } else {
+          tp1 = toFixed(entry - pip20, pair);
+          tp2 = toFixed(entry - pip50, pair);
+          tp3 = toFixed(entry - pip100, pair);
+          text = `${chart} *New signal SELL*\n\n*Recomend Entry:* ${toFixed(entry, pair)}\n\n*Take profit:*\nTP 1: ${tp1}\nTP 2: ${tp2}\nTP 3: ${tp3}\n\n*Stop loss:*\nSL 50 pips\nSL 50 pips`;
+        }
+        return text;
+      }
+      function updateSignal() {
+        const pair = AMP.getState('fxpair');
+        const type = AMP.getState('fxtype');
+        const price = AMP.getState('fxprice');
+        const out = getSignal(pair, type, price);
+        AMP.setState({ signalOutput: out });
+      }
+      // Live update output
+      AMP.addEventListener('amp:bind:init', updateSignal);
+      AMP.addEventListener('amp:bind:change', updateSignal);
+    })();
+  </script>
+  <script async custom-element="amp-script" src="https://cdn.ampproject.org/v0/amp-script-0.1.js"></script>
+  <amp-script layout="container" script="amp-custom-script"></amp-script>
+</body>
+</html>
